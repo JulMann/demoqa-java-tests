@@ -64,4 +64,33 @@ public class PracticeFormTests extends TestBase {
         $("[id=example-modal-sizes-title-lg]").shouldHave(text("Thanks for submitting the form"));
 
     }
+
+    @Test
+    void successfulFillRequiredFields() {
+        open("/automation-practice-form");
+
+        // Заполнение обязательных полей
+        $("[id=firstName]").setValue("Julia");
+        $("[id=lastName]").setValue("Fox");
+        $("[name='gender'][value='Female']").click();
+        $("[id=userNumber]").setValue("1231231230");
+
+        $("[id=dateOfBirthInput]").sendKeys(Keys.chord(Keys.CONTROL, "a"));
+        $("[id=dateOfBirthInput]").sendKeys("15 May 2000" + "\n");
+        $("[id=dateOfBirthInput]").pressEnter();
+
+        // Проверки заполнения
+        $(byText("Julia"));
+        $(byText("Fox"));
+        $("[name='gender'][value='Female']").shouldBe(selected);
+        $(byText("1231231230"));
+        $(byText("15 May 2000"));
+
+        // Отправка формы и открытие модального окна (предварительно прокрутив страницу)
+        $("[id=submit]").scrollTo();
+        $("[id=submit]").click();
+
+        $("[id=example-modal-sizes-title-lg]").shouldHave(text("Thanks for submitting the form"));
+
+    }
 }
