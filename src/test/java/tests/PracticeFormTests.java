@@ -111,4 +111,34 @@ public class PracticeFormTests extends TestBase {
 
     }
 
+    @Test
+    void unsuccessfulSubmissionSpacesInsteadName() {
+        open("/automation-practice-form");
+
+        // Заполнение только пробелами обязательных полей Name и Last Name
+        $("[id=firstName]").setValue("    ");
+        $("[id=lastName]").setValue(" ");
+
+        // Заполнение остальных обязательных полей
+        $("[name='gender'][value='Female']").click();
+        $("[id=userNumber]").setValue("1231231230");
+
+
+        // Проверки заполнения
+        $(byText("    "));
+        $(byText(" "));
+        $("[name='gender'][value='Female']").shouldBe(selected);
+        $(byText("1231231230"));
+        $(byText("15 May 2000"));
+
+        // Отправка формы и открытие модального окна (предварительно прокрутив страницу)
+        $("[id=submit]").scrollTo();
+        $("[id=submit]").click();
+
+        // Проверка отображения сообщений об ошибках для полей Name и Last Name: цвет границы поля - красный
+        $("#firstName.mr-sm-2.form-control").shouldHave(cssValue("border-color", "rgb(220, 53, 69)"));
+        $("#lastName.mr-sm-2.form-control").shouldHave(cssValue("border-color", "rgb(220, 53, 69)"));
+
+    }
+
 }
