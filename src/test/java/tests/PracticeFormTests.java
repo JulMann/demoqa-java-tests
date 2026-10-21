@@ -141,4 +141,30 @@ public class PracticeFormTests extends TestBase {
 
     }
 
+    @Test
+    void unsuccessfulSubmissionSpacesInsteadMobile() {
+        open("/automation-practice-form");
+
+        // Заполнение обязательных полей
+        $("[id=firstName]").setValue("Bob");
+        $("[id=lastName]").setValue("Bulk");
+        $("[name='gender'][value='Male']").click();
+
+        // Заполнение только пробелами обязательного поля Mobile
+        $("[id=userNumber]").setValue("          ");
+
+        // Проверки заполнения
+        $(byText("Bob"));
+        $(byText("Bulk"));
+        $("[name='gender'][value='Male']").shouldBe(selected);
+        $(byText("          "));
+
+        // Отправка формы и открытие модального окна (предварительно прокрутив страницу)
+        $("[id=submit]").scrollTo();
+        $("[id=submit]").click();
+
+        // Проверка отображения сообщения об ошибке для поля Mobile: цвет границы поля - красный
+        $("#userNumber.mr-sm-2.form-control").shouldHave(cssValue("border-color", "rgb(220, 53, 69)"));
+
+    }
 }
