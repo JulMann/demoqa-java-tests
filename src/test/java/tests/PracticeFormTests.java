@@ -61,6 +61,7 @@ public class PracticeFormTests extends TestBase {
         $("[id=submit]").scrollTo();
         $("[id=submit]").click();
 
+        // Проверка открытия модального окна
         $("[id=example-modal-sizes-title-lg]").shouldHave(text("Thanks for submitting the form"));
 
     }
@@ -90,6 +91,7 @@ public class PracticeFormTests extends TestBase {
         $("[id=submit]").scrollTo();
         $("[id=submit]").click();
 
+        // Проверка открытия модального окна
         $("[id=example-modal-sizes-title-lg]").shouldHave(text("Thanks for submitting the form"));
 
     }
@@ -165,6 +167,41 @@ public class PracticeFormTests extends TestBase {
 
         // Проверка отображения сообщения об ошибке для поля Mobile: цвет границы поля - красный
         $("#userNumber.mr-sm-2.form-control").shouldHave(cssValue("border-color", "rgb(220, 53, 69)"));
+
+    }
+
+    @Test
+    void unsuccessfulSubmissionInvalidEmail() {
+        open("/automation-practice-form");
+
+        // Заполнение обязательных полей
+        $("[id=firstName]").setValue("Julia");
+        $("[id=lastName]").setValue("Fox");
+        $("[name='gender'][value='Female']").click();
+        $("[id=userNumber]").setValue("1231231230");
+
+        $("[id=dateOfBirthInput]").sendKeys(Keys.chord(Keys.CONTROL, "a"));
+        $("[id=dateOfBirthInput]").sendKeys("15 May 2000" + "\n");
+        $("[id=dateOfBirthInput]").pressEnter();
+
+        // Заполнение невалидного email
+        $("[id=userEmail]").setValue("juliafox.aqa");
+
+        // Проверки заполнения
+        $(byText("Julia"));
+        $(byText("Fox"));
+        $("[name='gender'][value='Female']").shouldBe(selected);
+        $(byText("1231231230"));
+        $(byText("15 May 2000"));
+        $(byText("juliafox.aqa"));
+
+
+        // Отправка формы и открытие модального окна (предварительно прокрутив страницу)
+        $("[id=submit]").scrollTo();
+        $("[id=submit]").click();
+
+        // Проверка отображения сообщения об ошибке для поля Email: цвет границы поля - красный
+        $("#userEmail.mr-sm-2.form-control").shouldHave(cssValue("border-color", "rgb(220, 53, 69)"));
 
     }
 }
