@@ -5,8 +5,8 @@ import org.openqa.selenium.Keys;
 
 import java.io.File;
 
-import static com.codeborne.selenide.Condition.selected;
-import static com.codeborne.selenide.Condition.text;
+import static com.codeborne.selenide.Condition.*;
+import static com.codeborne.selenide.Condition.cssValue;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
@@ -93,4 +93,22 @@ public class PracticeFormTests extends TestBase {
         $("[id=example-modal-sizes-title-lg]").shouldHave(text("Thanks for submitting the form"));
 
     }
+
+    @Test
+    void unsuccessfulSubmissionIncompleteForm() {
+        open("/automation-practice-form");
+
+        // Отправка формы без заполнения полей
+        $("[id=submit]").click();
+
+        // Проверка отображения сообщений об ошибках: цвет границы поля - красный
+        $("#firstName.mr-sm-2.form-control").shouldHave(cssValue("border-color", "rgb(220, 53, 69)"));
+        $("#lastName.mr-sm-2.form-control").shouldHave(cssValue("border-color", "rgb(220, 53, 69)"));
+        $("#userNumber.mr-sm-2.form-control").shouldHave(cssValue("border-color", "rgb(220, 53, 69)"));
+        $("#gender-radio-1.form-check-input").shouldHave(cssValue("border-color", "rgb(220, 53, 69)"));
+        $("#gender-radio-2.form-check-input").shouldHave(cssValue("border-color", "rgb(220, 53, 69)"));
+        $("#gender-radio-3.form-check-input").shouldHave(cssValue("border-color", "rgb(220, 53, 69)"));
+
+    }
+
 }
