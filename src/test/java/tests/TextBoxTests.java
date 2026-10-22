@@ -30,7 +30,7 @@ public class TextBoxTests extends TestBase {
     }
 
     @Test
-    void submissionNameFieldTrimsSpaces() {
+    void trimsExtraSpacesInNameField() {
         open("/text-box");
 
         // Заполнение поля Name с лишними пробелами
