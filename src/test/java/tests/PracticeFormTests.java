@@ -175,4 +175,28 @@ public class PracticeFormTests extends TestBase {
         $("#userEmail.mr-sm-2.form-control").shouldHave(cssValue("border-color", "rgb(220, 53, 69)"));
 
     }
+
+    @Test
+    void unsuccessfulSubmissionInvalidName() {
+        open("/automation-practice-form");
+
+        // Заполнение невалидного Name
+        $("#firstName").setValue("-Ju1i@?!№**&");
+        $("#lastName").setValue("F");
+
+        // Заполнение обязательных полей
+        $("#gender-radio-2").click();
+        $("#userNumber").setValue("1231231230");
+        $("#dateOfBirthInput").sendKeys(Keys.chord(Keys.CONTROL, "a"));
+        $("#dateOfBirthInput").sendKeys("15 May 2000" + "\n");
+        $("#dateOfBirthInput").pressEnter();
+
+        // Скролл до кнопки. Оправка формы и открытие модального окна
+        $("#submit").scrollTo();
+        $("#submit").click();
+
+        // Проверка отображения сообщений об ошибках для полей Name и Last Name. Ожидание: цвет границы поля - красный
+        $("#firstName.mr-sm-2.form-control").shouldHave(cssValue("border-color", "rgb(220, 53, 69)"));
+        $("#lastName.mr-sm-2.form-control").shouldHave(cssValue("border-color", "rgb(220, 53, 69)"));
+    }
 }
