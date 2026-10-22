@@ -11,6 +11,7 @@ import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 
 public class PracticeFormTests extends TestBase {
+
     @Test
     void successfulSubmissionAllFields() {
         open("/automation-practice-form");
@@ -40,27 +41,42 @@ public class PracticeFormTests extends TestBase {
         $("#react-select-3-input").setValue("Uttar Pradesh").pressEnter();
         $("#react-select-4-input").setValue("Lucknow").pressEnter();
 
-        // Проверки заполнения
-        $("#firstName").shouldHave(value("Julia"));
-        $("#lastName").shouldHave(value("Fox"));
-        $("#userEmail").shouldHave(value("julia@fox.aqa"));
-        $("#gender-radio-2").shouldBe(selected);
-        $("#userNumber").shouldHave(value("1231231230"));
-        $("#dateOfBirthInput").shouldHave(value("15 May 2000"));
-        $(".subjects-auto-complete__value-container").shouldHave(text("Computer Science"));
-        $(".subjects-auto-complete__value-container").shouldHave(text("Maths"));
-        $("#hobbies-checkbox-1").shouldBe(selected);
-        $("#hobbies-checkbox-2").shouldBe(selected);
-        $("#uploadPicture").shouldHave(value("picture-homa.jpg"));
-        $("#currentAddress").shouldHave(value("General Lizyukov Street, house 4"));
-        $("#state").$("div[class*='singleValue']").shouldHave(exactText("Uttar Pradesh"));
-        $("#city").$("div[class*='singleValue']").shouldHave(exactText("Lucknow"));
-
 
         // Скролл до кнопки. Оправка формы и открытие модального окна
         $("#submit").scrollTo();
         $("#submit").click();
         $("#example-modal-sizes-title-lg").shouldHave(text("Thanks for submitting the form"));
+
+        // Проверки сохранения и отображения данных в модальном окне
+        $(".modal-body tr:nth-child(1) td:nth-child(1)").shouldHave(text("Student Name"));
+        $(".modal-body tr:nth-child(1) td:nth-child(2)").shouldHave(text("Julia Fox"));
+
+        $(".modal-body tr:nth-child(2) td:nth-child(1)").shouldHave(text("Student Email"));
+        $(".modal-body tr:nth-child(2) td:nth-child(2)").shouldHave(text("julia@fox.aqa"));
+
+        $(".modal-body tr:nth-child(3) td:nth-child(1)").shouldHave(text("Gender"));
+        $(".modal-body tr:nth-child(3) td:nth-child(2)").shouldHave(text("Female"));
+
+        $(".modal-body tr:nth-child(4) td:nth-child(1)").shouldHave(text("Mobile"));
+        $(".modal-body tr:nth-child(4) td:nth-child(2)").shouldHave(text("1231231230"));
+
+        $(".modal-body tr:nth-child(5) td:nth-child(1)").shouldHave(text("Date of Birth"));
+        $(".modal-body tr:nth-child(5) td:nth-child(2)").shouldHave(text("15 May,2000"));
+
+        $(".modal-body tr:nth-child(6) td:nth-child(1)").shouldHave(text("Subjects"));
+        $(".modal-body tr:nth-child(6) td:nth-child(2)").shouldHave(text("Computer Science, Maths"));
+
+        $(".modal-body tr:nth-child(7) td:nth-child(1)").shouldHave(text("Hobbies"));
+        $(".modal-body tr:nth-child(7) td:nth-child(2)").shouldHave(text("Sports, Reading"));
+
+        $(".modal-body tr:nth-child(8) td:nth-child(1)").shouldHave(text("Picture"));
+        $(".modal-body tr:nth-child(8) td:nth-child(2)").shouldHave(text("picture-homa.jpg"));
+
+        $(".modal-body tr:nth-child(9) td:nth-child(1)").shouldHave(text("Address"));
+        $(".modal-body tr:nth-child(9) td:nth-child(2)").shouldHave(text("General Lizyukov Street, house 4"));
+
+        $(".modal-body tr:nth-child(10) td:nth-child(1)").shouldHave(text("State and City"));
+        $(".modal-body tr:nth-child(10) td:nth-child(2)").shouldHave(text("Uttar Pradesh Lucknow"));
 
     }
 
@@ -77,17 +93,41 @@ public class PracticeFormTests extends TestBase {
         $("#dateOfBirthInput").sendKeys("15 May 2000" + "\n");
         $("#dateOfBirthInput").pressEnter();
 
-        // Проверки заполнения
-        $("#firstName").shouldHave(value("Julia"));
-        $("#lastName").shouldHave(value("Fox"));
-        $("#gender-radio-2").shouldBe(selected);
-        $("#userNumber").shouldHave(value("1231231230"));
-        $("#dateOfBirthInput").shouldHave(value("15 May 2000"));
-
         // Скролл до кнопки. Оправка формы и открытие модального окна
         $("#submit").scrollTo();
         $("#submit").click();
         $("#example-modal-sizes-title-lg").shouldHave(text("Thanks for submitting the form"));
+
+        // Проверки сохранения и отображения данных в модальном окне
+        $(".modal-body tr:nth-child(1) td:nth-child(1)").shouldHave(text("Student Name"));
+        $(".modal-body tr:nth-child(1) td:nth-child(2)").shouldHave(text("Julia Fox"));
+
+        $(".modal-body tr:nth-child(2) td:nth-child(1)").shouldHave(text("Student Email"));
+        $(".modal-body tr:nth-child(2) td:nth-child(2)").shouldHave(empty);
+
+        $(".modal-body tr:nth-child(3) td:nth-child(1)").shouldHave(text("Gender"));
+        $(".modal-body tr:nth-child(3) td:nth-child(2)").shouldHave(text("Female"));
+
+        $(".modal-body tr:nth-child(4) td:nth-child(1)").shouldHave(text("Mobile"));
+        $(".modal-body tr:nth-child(4) td:nth-child(2)").shouldHave(text("1231231230"));
+
+        $(".modal-body tr:nth-child(5) td:nth-child(1)").shouldHave(text("Date of Birth"));
+        $(".modal-body tr:nth-child(5) td:nth-child(2)").shouldHave(text("15 May,2000"));
+
+        $(".modal-body tr:nth-child(6) td:nth-child(1)").shouldHave(text("Subjects"));
+        $(".modal-body tr:nth-child(6) td:nth-child(2)").shouldHave(empty);
+
+        $(".modal-body tr:nth-child(7) td:nth-child(1)").shouldHave(text("Hobbies"));
+        $(".modal-body tr:nth-child(7) td:nth-child(2)").shouldHave(empty);
+
+        $(".modal-body tr:nth-child(8) td:nth-child(1)").shouldHave(text("Picture"));
+        $(".modal-body tr:nth-child(8) td:nth-child(2)").shouldHave(empty);
+
+        $(".modal-body tr:nth-child(9) td:nth-child(1)").shouldHave(text("Address"));
+        $(".modal-body tr:nth-child(9) td:nth-child(2)").shouldHave(empty);
+
+        $(".modal-body tr:nth-child(10) td:nth-child(1)").shouldHave(text("State and City"));
+        $(".modal-body tr:nth-child(10) td:nth-child(2)").shouldHave(empty);
 
     }
 
