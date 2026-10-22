@@ -47,7 +47,7 @@ public class PracticeFormTests extends TestBase {
         $("#submit").click();
         $("#example-modal-sizes-title-lg").shouldHave(text("Thanks for submitting the form"));
 
-        // Проверки сохранения и отображения данных в модальном окне
+        // Проверки отображения отправленных данных в модальном окне
         $(".modal-body tr:nth-child(1) td:nth-child(1)").shouldHave(text("Student Name"));
         $(".modal-body tr:nth-child(1) td:nth-child(2)").shouldHave(text("Julia Fox"));
 
@@ -98,7 +98,7 @@ public class PracticeFormTests extends TestBase {
         $("#submit").click();
         $("#example-modal-sizes-title-lg").shouldHave(text("Thanks for submitting the form"));
 
-        // Проверки сохранения и отображения данных в модальном окне
+        // Проверки отображения отправленных данных в модальном окне
         $(".modal-body tr:nth-child(1) td:nth-child(1)").shouldHave(text("Student Name"));
         $(".modal-body tr:nth-child(1) td:nth-child(2)").shouldHave(text("Julia Fox"));
 
@@ -138,7 +138,7 @@ public class PracticeFormTests extends TestBase {
         // Отправка формы без заполнения полей
         $("#submit").click();
 
-        // Проверка отображения сообщений об ошибках. Ожидание: цвет границы поля - красный
+        // Проверка выделения полей с ошибками. Ожидание: цвет границы поля - красный
         $("#firstName.mr-sm-2.form-control").shouldHave(cssValue("border-color", "rgb(220, 53, 69)"));
         $("#lastName.mr-sm-2.form-control").shouldHave(cssValue("border-color", "rgb(220, 53, 69)"));
         $("#userNumber.mr-sm-2.form-control").shouldHave(cssValue("border-color", "rgb(220, 53, 69)"));
@@ -164,7 +164,7 @@ public class PracticeFormTests extends TestBase {
         $("#submit").scrollTo();
         $("#submit").click();
 
-        // Проверка отображения сообщений об ошибках для полей Name и Last Name. Ожидание: цвет границы поля - красный
+        // Проверка выделения полей Name и Last Name. Ожидание: цвет границы поля - красный
         $("#firstName.mr-sm-2.form-control").shouldHave(cssValue("border-color", "rgb(220, 53, 69)"));
         $("#lastName.mr-sm-2.form-control").shouldHave(cssValue("border-color", "rgb(220, 53, 69)"));
 
@@ -186,7 +186,7 @@ public class PracticeFormTests extends TestBase {
         $("#submit").scrollTo();
         $("#submit").click();
 
-        // Проверка отображения сообщения об ошибке для поля Mobile. Ожидание: цвет границы поля - красный
+        // Проверка выделения поля Mobile. Ожидание: цвет границы поля - красный
         $("#userNumber.mr-sm-2.form-control").shouldHave(cssValue("border-color", "rgb(220, 53, 69)"));
 
     }
@@ -211,7 +211,7 @@ public class PracticeFormTests extends TestBase {
         $("#submit").scrollTo();
         $("#submit").click();
 
-        // Проверка отображения сообщения об ошибке для поля Email. Ожидание: цвет границы поля - красный
+        // Проверка выделения поля Email. Ожидание: цвет границы поля - красный
         $("#userEmail.mr-sm-2.form-control").shouldHave(cssValue("border-color", "rgb(220, 53, 69)"));
 
     }
@@ -235,7 +235,7 @@ public class PracticeFormTests extends TestBase {
         $("#submit").scrollTo();
         $("#submit").click();
 
-        // Проверка отображения сообщений об ошибках для полей Name и Last Name. Ожидание: цвет границы поля - красный
+        // Проверка выделения полей Name и Last Name. Ожидание: цвет границы поля - красный
         $("#firstName.mr-sm-2.form-control").shouldHave(cssValue("border-color", "rgb(220, 53, 69)"));
         $("#lastName.mr-sm-2.form-control").shouldHave(cssValue("border-color", "rgb(220, 53, 69)"));
     }
