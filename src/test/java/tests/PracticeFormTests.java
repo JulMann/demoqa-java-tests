@@ -1,5 +1,6 @@
 package tests;
 
+import com.codeborne.selenide.Condition;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.Keys;
 
@@ -7,6 +8,8 @@ import java.io.File;
 
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Condition.cssValue;
+import static com.codeborne.selenide.Selectors.byAttribute;
+import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 
@@ -20,64 +23,49 @@ public class PracticeFormTests extends TestBase {
         $("#firstName").setValue("Julia");
         $("#lastName").setValue("Fox");
         $("#userEmail").setValue("julia@fox.aqa");
-        $("#gender-radio-2").click();
+        $("#genterWrapper").$(byText("Female")).click();
         $("#userNumber").setValue("1231231230");
 
-        $("#dateOfBirthInput").sendKeys(Keys.chord(Keys.CONTROL, "a"));
-        $("#dateOfBirthInput").sendKeys("15 May 2000" + "\n");
-        $("#dateOfBirthInput").pressEnter();
+        $("#dateOfBirthInput").click();
+        $(".react-datepicker__month-select").shouldBe(visible).selectOptionByValue("4");
+        $(".react-datepicker__year-select").shouldBe(visible).selectOptionByValue("2000");
+        $(".react-datepicker__day--015").click();
 
         $("#subjectsInput").clear();
         $("#subjectsInput").setValue("Computer Science").pressEnter();
         $("#subjectsInput").setValue("Maths").pressEnter();
 
-        $("#hobbies-checkbox-1").click();
-        $("#hobbies-checkbox-2").click();
+        $("#hobbiesWrapper").$(byText("Sports")).click();
+        $("#hobbiesWrapper").$(byText("Reading")).click();
 
-        File picturePath = new File("src/test/resources/picture-homa.jpg");
-        $("#uploadPicture").uploadFile(picturePath);
+        $("#uploadPicture").uploadFromClasspath("picture-homa.jpg");
 
         $("#currentAddress").setValue("General Lizyukov Street, house 4");
         $("#react-select-3-input").setValue("Uttar Pradesh").pressEnter();
         $("#react-select-4-input").setValue("Lucknow").pressEnter();
 
 
-        // Скролл до кнопки. Оправка формы и открытие модального окна
+        // Оправка формы, проверка валидации и открытие модального окна
         $("#submit").scrollTo();
         $("#submit").click();
-        $("#example-modal-sizes-title-lg").shouldHave(text("Thanks for submitting the form"));
+        $("#userForm").shouldHave(Condition.cssClass("was-validated"));
+        $("#example-modal-sizes-title-lg").shouldBe(Condition.visible);
 
         // Проверки отображения отправленных данных в модальном окне
-        $(".modal-body tr:nth-child(1) td:nth-child(1)").shouldHave(text("Student Name"));
-        $(".modal-body tr:nth-child(1) td:nth-child(2)").shouldHave(text("Julia Fox"));
+        $(".table-responsive").$(byText("Student Name")).parent().shouldHave(text("Julia Fox"));
+        $(".table-responsive").$(byText("Student Email")).parent().shouldHave(text("julia@fox.aqa"));
+        $(".table-responsive").$(byText("Gender")).parent().shouldHave(text("Female"));
+        $(".table-responsive").$(byText("Mobile")).parent().shouldHave(text("1231231230"));
+        $(".table-responsive").$(byText("Date of Birth")).parent().shouldHave(text("15 May,2000"));
+        $(".table-responsive").$(byText("Subjects")).parent().shouldHave(text("Computer Science, Maths"));
+        $(".table-responsive").$(byText("Hobbies")).parent().shouldHave(text("Sports, Reading"));
+        $(".table-responsive").$(byText("Picture")).parent().shouldHave(text("picture-homa.jpg"));
+        $(".table-responsive").$(byText("Address")).parent().shouldHave(text("General Lizyukov Street, house 4"));
+        $(".table-responsive").$(byText("State and City")).parent().shouldHave(text("Uttar Pradesh Lucknow"));
 
-        $(".modal-body tr:nth-child(2) td:nth-child(1)").shouldHave(text("Student Email"));
-        $(".modal-body tr:nth-child(2) td:nth-child(2)").shouldHave(text("julia@fox.aqa"));
-
-        $(".modal-body tr:nth-child(3) td:nth-child(1)").shouldHave(text("Gender"));
-        $(".modal-body tr:nth-child(3) td:nth-child(2)").shouldHave(text("Female"));
-
-        $(".modal-body tr:nth-child(4) td:nth-child(1)").shouldHave(text("Mobile"));
-        $(".modal-body tr:nth-child(4) td:nth-child(2)").shouldHave(text("1231231230"));
-
-        $(".modal-body tr:nth-child(5) td:nth-child(1)").shouldHave(text("Date of Birth"));
-        $(".modal-body tr:nth-child(5) td:nth-child(2)").shouldHave(text("15 May,2000"));
-
-        $(".modal-body tr:nth-child(6) td:nth-child(1)").shouldHave(text("Subjects"));
-        $(".modal-body tr:nth-child(6) td:nth-child(2)").shouldHave(text("Computer Science, Maths"));
-
-        $(".modal-body tr:nth-child(7) td:nth-child(1)").shouldHave(text("Hobbies"));
-        $(".modal-body tr:nth-child(7) td:nth-child(2)").shouldHave(text("Sports, Reading"));
-
-        $(".modal-body tr:nth-child(8) td:nth-child(1)").shouldHave(text("Picture"));
-        $(".modal-body tr:nth-child(8) td:nth-child(2)").shouldHave(text("picture-homa.jpg"));
-
-        $(".modal-body tr:nth-child(9) td:nth-child(1)").shouldHave(text("Address"));
-        $(".modal-body tr:nth-child(9) td:nth-child(2)").shouldHave(text("General Lizyukov Street, house 4"));
-
-        $(".modal-body tr:nth-child(10) td:nth-child(1)").shouldHave(text("State and City"));
-        $(".modal-body tr:nth-child(10) td:nth-child(2)").shouldHave(text("Uttar Pradesh Lucknow"));
-
+        // Закрытие модального окна
+        $("#closeLargeModal").click();
+        $("#example-modal-sizes-title-lg").shouldNotBe(Condition.visible);
     }
 
     @Test
@@ -87,47 +75,34 @@ public class PracticeFormTests extends TestBase {
         // Заполнение обязательных полей
         $("#firstName").setValue("Julia");
         $("#lastName").setValue("Fox");
-        $("#gender-radio-2").click();
+        $("#genterWrapper").$(byText("Female")).click();
         $("#userNumber").setValue("1231231230");
-        $("#dateOfBirthInput").sendKeys(Keys.chord(Keys.CONTROL, "a"));
-        $("#dateOfBirthInput").sendKeys("15 May 2000" + "\n");
-        $("#dateOfBirthInput").pressEnter();
+        $("#dateOfBirthInput").click();
+        $(".react-datepicker__month-select").shouldBe(visible).selectOptionByValue("4");
+        $(".react-datepicker__year-select").shouldBe(visible).selectOptionByValue("2000");
+        $(".react-datepicker__day--015").click();
 
-        // Скролл до кнопки. Оправка формы и открытие модального окна
+        // Оправка формы, проверка валидация и открытие модального окна
         $("#submit").scrollTo();
         $("#submit").click();
+        $("#userForm").shouldHave(Condition.cssClass("was-validated"));
         $("#example-modal-sizes-title-lg").shouldHave(text("Thanks for submitting the form"));
 
         // Проверки отображения отправленных данных в модальном окне
-        $(".modal-body tr:nth-child(1) td:nth-child(1)").shouldHave(text("Student Name"));
-        $(".modal-body tr:nth-child(1) td:nth-child(2)").shouldHave(text("Julia Fox"));
+        $(".table-responsive").$(byText("Student Name")).parent().shouldHave(text("Julia Fox"));
+        $(".table-responsive").$(byText("Student Email")).parent().$$("td").get(1).shouldHave(Condition.empty);
+        $(".table-responsive").$(byText("Gender")).parent().shouldHave(text("Female"));
+        $(".table-responsive").$(byText("Mobile")).parent().shouldHave(text("1231231230"));
+        $(".table-responsive").$(byText("Date of Birth")).parent().shouldHave(text("15 May,2000"));
+        $(".table-responsive").$(byText("Subjects")).parent().$$("td").get(1).shouldHave(Condition.empty);
+        $(".table-responsive").$(byText("Hobbies")).parent().$$("td").get(1).shouldHave(Condition.empty);
+        $(".table-responsive").$(byText("Picture")).parent().$$("td").get(1).shouldHave(Condition.empty);
+        $(".table-responsive").$(byText("Address")).parent().$$("td").get(1).shouldHave(Condition.empty);
+        $(".table-responsive").$(byText("State and City")).parent().$$("td").get(1).shouldHave(Condition.empty);
 
-        $(".modal-body tr:nth-child(2) td:nth-child(1)").shouldHave(text("Student Email"));
-        $(".modal-body tr:nth-child(2) td:nth-child(2)").shouldHave(empty);
-
-        $(".modal-body tr:nth-child(3) td:nth-child(1)").shouldHave(text("Gender"));
-        $(".modal-body tr:nth-child(3) td:nth-child(2)").shouldHave(text("Female"));
-
-        $(".modal-body tr:nth-child(4) td:nth-child(1)").shouldHave(text("Mobile"));
-        $(".modal-body tr:nth-child(4) td:nth-child(2)").shouldHave(text("1231231230"));
-
-        $(".modal-body tr:nth-child(5) td:nth-child(1)").shouldHave(text("Date of Birth"));
-        $(".modal-body tr:nth-child(5) td:nth-child(2)").shouldHave(text("15 May,2000"));
-
-        $(".modal-body tr:nth-child(6) td:nth-child(1)").shouldHave(text("Subjects"));
-        $(".modal-body tr:nth-child(6) td:nth-child(2)").shouldHave(empty);
-
-        $(".modal-body tr:nth-child(7) td:nth-child(1)").shouldHave(text("Hobbies"));
-        $(".modal-body tr:nth-child(7) td:nth-child(2)").shouldHave(empty);
-
-        $(".modal-body tr:nth-child(8) td:nth-child(1)").shouldHave(text("Picture"));
-        $(".modal-body tr:nth-child(8) td:nth-child(2)").shouldHave(empty);
-
-        $(".modal-body tr:nth-child(9) td:nth-child(1)").shouldHave(text("Address"));
-        $(".modal-body tr:nth-child(9) td:nth-child(2)").shouldHave(empty);
-
-        $(".modal-body tr:nth-child(10) td:nth-child(1)").shouldHave(text("State and City"));
-        $(".modal-body tr:nth-child(10) td:nth-child(2)").shouldHave(empty);
+        // Закрытие модального окна
+        $("#closeLargeModal").click();
+        $("#example-modal-sizes-title-lg").shouldNotBe(Condition.visible);
 
     }
 
@@ -135,16 +110,18 @@ public class PracticeFormTests extends TestBase {
     void unsuccessfulSubmissionIncompleteForm() {
         open("/automation-practice-form");
 
-        // Отправка формы без заполнения полей
+        // Отправка формы без заполнения полей, проверка валидации
+        $("#submit").scrollTo();
         $("#submit").click();
+        $("#userForm").shouldHave(Condition.cssClass("was-validated"));
 
         // Проверка выделения полей с ошибками. Ожидание: цвет границы поля - красный
-        $("#firstName.mr-sm-2.form-control").shouldHave(cssValue("border-color", "rgb(220, 53, 69)"));
-        $("#lastName.mr-sm-2.form-control").shouldHave(cssValue("border-color", "rgb(220, 53, 69)"));
-        $("#userNumber.mr-sm-2.form-control").shouldHave(cssValue("border-color", "rgb(220, 53, 69)"));
-        $("#gender-radio-1.form-check-input").shouldHave(cssValue("border-color", "rgb(220, 53, 69)"));
-        $("#gender-radio-2.form-check-input").shouldHave(cssValue("border-color", "rgb(220, 53, 69)"));
-        $("#gender-radio-3.form-check-input").shouldHave(cssValue("border-color", "rgb(220, 53, 69)"));
+        $("#firstName").shouldHave(cssValue("border-color", "rgb(220, 53, 69)"));
+        $("#lastName").shouldHave(cssValue("border-color", "rgb(220, 53, 69)"));
+        $("#userNumber").shouldHave(cssValue("border-color", "rgb(220, 53, 69)"));
+        $("#genterWrapper").$(byText("Male")).shouldHave(cssValue("border-color", "rgb(220, 53, 69)"));
+        $("#genterWrapper").$(byText("Female")).shouldHave(cssValue("border-color", "rgb(220, 53, 69)"));
+        $("#genterWrapper").$(byText("Other")).shouldHave(cssValue("border-color", "rgb(220, 53, 69)"));
 
     }
 
@@ -157,16 +134,17 @@ public class PracticeFormTests extends TestBase {
         $("#lastName").setValue(" ");
 
         // Заполнение остальных обязательных полей
-        $("#gender-radio-2").click();
+        $("#genterWrapper").$(byText("Female")).click();
         $("#userNumber").setValue("1231231230");
 
-        // Скролл до кнопки. Оправка формы и открытие модального окна
+        // Оправка формы, проверка валидации
         $("#submit").scrollTo();
         $("#submit").click();
+        $("#userForm").shouldHave(Condition.cssClass("was-validated"));
 
         // Проверка выделения полей Name и Last Name. Ожидание: цвет границы поля - красный
-        $("#firstName.mr-sm-2.form-control").shouldHave(cssValue("border-color", "rgb(220, 53, 69)"));
-        $("#lastName.mr-sm-2.form-control").shouldHave(cssValue("border-color", "rgb(220, 53, 69)"));
+        $("#firstName").shouldHave(cssValue("border-color", "rgb(220, 53, 69)"));
+        $("#lastName").shouldHave(cssValue("border-color", "rgb(220, 53, 69)"));
 
     }
 
@@ -177,17 +155,18 @@ public class PracticeFormTests extends TestBase {
         // Заполнение обязательных полей
         $("#firstName").setValue("Bob");
         $("#lastName").setValue("Bulk");
-        $("#gender-radio-1").click();
+        $("#genterWrapper").$(byText("Male")).click();
 
         // Заполнение только пробелами обязательного поля Mobile
         $("#userNumber").setValue("          ");
 
-        // Скролл до кнопки. Оправка формы и открытие модального окна
+        // Оправка формы, проверка валидации
         $("#submit").scrollTo();
         $("#submit").click();
+        $("#userForm").shouldHave(Condition.cssClass("was-validated"));
 
         // Проверка выделения поля Mobile. Ожидание: цвет границы поля - красный
-        $("#userNumber.mr-sm-2.form-control").shouldHave(cssValue("border-color", "rgb(220, 53, 69)"));
+        $("#userNumber").shouldHave(cssValue("border-color", "rgb(220, 53, 69)"));
 
     }
 
@@ -198,21 +177,24 @@ public class PracticeFormTests extends TestBase {
         // Заполнение обязательных полей
         $("#firstName").setValue("Julia");
         $("#lastName").setValue("Fox");
-        $("#gender-radio-2").click();
+        $("#genterWrapper").$(byText("Female")).click();
         $("#userNumber").setValue("1231231230");
-        $("#dateOfBirthInput").sendKeys(Keys.chord(Keys.CONTROL, "a"));
-        $("#dateOfBirthInput").sendKeys("15 May 2000" + "\n");
-        $("#dateOfBirthInput").pressEnter();
+
+        $("#dateOfBirthInput").click();
+        $(".react-datepicker__month-select").shouldBe(visible).selectOptionByValue("4");
+        $(".react-datepicker__year-select").shouldBe(visible).selectOptionByValue("2000");
+        $(".react-datepicker__day--015").click();
 
         // Заполнение невалидного email
         $("#userEmail").setValue("juliafox.aqa");
 
-        // Скролл до кнопки. Оправка формы и открытие модального окна
+        // Оправка формы, проверка валидации
         $("#submit").scrollTo();
         $("#submit").click();
+        $("#userForm").shouldHave(Condition.cssClass("was-validated"));
 
         // Проверка выделения поля Email. Ожидание: цвет границы поля - красный
-        $("#userEmail.mr-sm-2.form-control").shouldHave(cssValue("border-color", "rgb(220, 53, 69)"));
+        $("#userEmail").shouldHave(cssValue("border-color", "rgb(220, 53, 69)"));
 
     }
 
@@ -225,18 +207,22 @@ public class PracticeFormTests extends TestBase {
         $("#lastName").setValue("F");
 
         // Заполнение обязательных полей
-        $("#gender-radio-2").click();
+        $("#genterWrapper").$(byText("Female")).click();
         $("#userNumber").setValue("1231231230");
-        $("#dateOfBirthInput").sendKeys(Keys.chord(Keys.CONTROL, "a"));
-        $("#dateOfBirthInput").sendKeys("15 May 2000" + "\n");
-        $("#dateOfBirthInput").pressEnter();
 
-        // Скролл до кнопки. Оправка формы и открытие модального окна
+        $("#dateOfBirthInput").click();
+        $(".react-datepicker__month-select").shouldBe(visible).selectOptionByValue("4");
+        $(".react-datepicker__year-select").shouldBe(visible).selectOptionByValue("2000");
+        $(".react-datepicker__day--015").click();
+
+        // Оправка формы, проверка валидации
         $("#submit").scrollTo();
         $("#submit").click();
+        $("#userForm").shouldHave(Condition.cssClass("was-validated"));
 
         // Проверка выделения полей Name и Last Name. Ожидание: цвет границы поля - красный
-        $("#firstName.mr-sm-2.form-control").shouldHave(cssValue("border-color", "rgb(220, 53, 69)"));
-        $("#lastName.mr-sm-2.form-control").shouldHave(cssValue("border-color", "rgb(220, 53, 69)"));
+        $("#firstName").shouldHave(cssValue("border-color", "rgb(220, 53, 69)"));
+        $("#lastName").shouldHave(cssValue("border-color", "rgb(220, 53, 69)"));
+
     }
 }
