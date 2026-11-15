@@ -14,9 +14,6 @@ public class TestData {
     public static final String ONLY_WHITESPACE_LAST_NAME = " ";
     public static final String INVALID_LAST_NAME = "F";
 
-    public static final String FULL_NAME = "Julia Fox";
-    public static final String LEADING_TRAILING_FULL_NAME = "    Julia Fox    ";
-
     public static final String USER_EMAIL = "julia@fox.aqa";
     public static final String INVALID_USER_EMAIL = "juliafox.aqa";
 

@@ -24,8 +24,8 @@ public class RegistrationFormTests extends TestBase {
         $("#userNumber").setValue(USER_NUMBER);
 
         $("#dateOfBirthInput").click();
-        $(".react-datepicker__month-select").shouldBe(visible).selectOption(DATE_OF_BIRTH_MONTH);
-        $(".react-datepicker__year-select").shouldBe(visible).selectOptionByValue(DATE_OF_BIRTH_YEAR);
+        $(".react-datepicker__month-select").selectOption(DATE_OF_BIRTH_MONTH);
+        $(".react-datepicker__year-select").selectOptionByValue(DATE_OF_BIRTH_YEAR);
         $(".react-datepicker__day--0" + DATE_OF_BIRTH_DAY).click();
 
         $("#subjectsInput").clear();
@@ -49,7 +49,7 @@ public class RegistrationFormTests extends TestBase {
         $("#example-modal-sizes-title-lg").shouldHave(text(MODAL_TITLE));
 
         // Проверки отображения отправленных данных в модальном окне
-        $(".table-responsive").$(byText("Student Name")).parent().shouldHave(text(FULL_NAME));
+        $(".table-responsive").$(byText("Student Name")).parent().shouldHave(text(FIRST_NAME + " " + LAST_NAME));
         $(".table-responsive").$(byText("Student Email")).parent().shouldHave(text(USER_EMAIL));
         $(".table-responsive").$(byText("Gender")).parent().shouldHave(text(GENDER.get(1)));
         $(".table-responsive").$(byText("Mobile")).parent().shouldHave(text(USER_NUMBER));
@@ -59,7 +59,8 @@ public class RegistrationFormTests extends TestBase {
         $(".table-responsive").$(byText("Hobbies")).parent().shouldHave(text(String.join(", ", HOBBIES)));
         $(".table-responsive").$(byText("Picture")).parent().shouldHave(text(PICTURE));
         $(".table-responsive").$(byText("Address")).parent().shouldHave(text(CURRENT_ADDRESS));
-        $(".table-responsive").$(byText("State and City")).parent().shouldHave(text(STATE_AND_CITIES.get(4).get(0) + " " + STATE_AND_CITIES.get(4).get(1)));
+        $(".table-responsive").$(byText("State and City")).parent().
+                shouldHave(text(STATE_AND_CITIES.get(4).get(0) + " " + STATE_AND_CITIES.get(4).get(1)));
 
     }
 
@@ -73,8 +74,8 @@ public class RegistrationFormTests extends TestBase {
         $("#genterWrapper").$(byText(GENDER.get(1))).click();
         $("#userNumber").setValue(USER_NUMBER);
         $("#dateOfBirthInput").click();
-        $(".react-datepicker__month-select").shouldBe(visible).selectOption(DATE_OF_BIRTH_MONTH);
-        $(".react-datepicker__year-select").shouldBe(visible).selectOptionByValue(DATE_OF_BIRTH_YEAR);
+        $(".react-datepicker__month-select").selectOption(DATE_OF_BIRTH_MONTH);
+        $(".react-datepicker__year-select").selectOptionByValue(DATE_OF_BIRTH_YEAR);
         $(".react-datepicker__day--0" + DATE_OF_BIRTH_DAY).click();
 
         // Отправка формы, проверка валидации и подтверждение корректного модального окна
@@ -83,11 +84,12 @@ public class RegistrationFormTests extends TestBase {
         $("#example-modal-sizes-title-lg").shouldHave(text(MODAL_TITLE));
 
         // Проверки отображения отправленных данных в модальном окне
-        $(".table-responsive").$(byText("Student Name")).parent().shouldHave(text(FULL_NAME));
+        $(".table-responsive").$(byText("Student Name")).parent().shouldHave(text(FIRST_NAME + " " + LAST_NAME));
         $(".table-responsive").$(byText("Student Email")).parent().$$("td").get(1).shouldHave(empty);
         $(".table-responsive").$(byText("Gender")).parent().shouldHave(text(GENDER.get(1)));
         $(".table-responsive").$(byText("Mobile")).parent().shouldHave(text(USER_NUMBER));
-        $(".table-responsive").$(byText("Date of Birth")).parent().shouldHave(text(DATE_OF_BIRTH_DAY + " " + DATE_OF_BIRTH_MONTH + "," + DATE_OF_BIRTH_YEAR));
+        $(".table-responsive").$(byText("Date of Birth")).parent().
+                shouldHave(text(DATE_OF_BIRTH_DAY + " " + DATE_OF_BIRTH_MONTH + "," + DATE_OF_BIRTH_YEAR));
         $(".table-responsive").$(byText("Subjects")).parent().$$("td").get(1).shouldHave(empty);
         $(".table-responsive").$(byText("Hobbies")).parent().$$("td").get(1).shouldHave(empty);
         $(".table-responsive").$(byText("Picture")).parent().$$("td").get(1).shouldHave(empty);
@@ -102,7 +104,6 @@ public class RegistrationFormTests extends TestBase {
 
         // Отправка формы без заполнения полей, проверка валидации
         $("#submit").scrollTo().click();
-        ;
         $("#userForm").shouldHave(Condition.cssClass(VALIDATION_CLASS));
 
         // Проверка выделения полей с ошибками. Ожидание: цвет границы поля - красный
@@ -129,7 +130,6 @@ public class RegistrationFormTests extends TestBase {
 
         // Оправка формы, проверка валидации
         $("#submit").scrollTo().click();
-        ;
         $("#userForm").shouldHave(Condition.cssClass(VALIDATION_CLASS));
 
         // Проверка выделения полей Name и Last Name. Ожидание: цвет границы поля - красный
@@ -152,7 +152,6 @@ public class RegistrationFormTests extends TestBase {
 
         // Оправка формы, проверка валидации
         $("#submit").scrollTo().click();
-        ;
         $("#userForm").shouldHave(Condition.cssClass(VALIDATION_CLASS));
 
         // Проверка выделения поля Mobile. Ожидание: цвет границы поля - красный
@@ -171,8 +170,8 @@ public class RegistrationFormTests extends TestBase {
         $("#userNumber").setValue(USER_NUMBER);
 
         $("#dateOfBirthInput").click();
-        $(".react-datepicker__month-select").shouldBe(visible).selectOption(DATE_OF_BIRTH_MONTH);
-        $(".react-datepicker__year-select").shouldBe(visible).selectOptionByValue(DATE_OF_BIRTH_YEAR);
+        $(".react-datepicker__month-select").selectOption(DATE_OF_BIRTH_MONTH);
+        $(".react-datepicker__year-select").selectOptionByValue(DATE_OF_BIRTH_YEAR);
         $(".react-datepicker__day--0" + DATE_OF_BIRTH_DAY).click();
 
         // Заполнение невалидного email
@@ -180,7 +179,6 @@ public class RegistrationFormTests extends TestBase {
 
         // Оправка формы, проверка валидации
         $("#submit").scrollTo().click();
-        ;
         $("#userForm").shouldHave(Condition.cssClass(VALIDATION_CLASS));
 
         // Проверка выделения поля Email. Ожидание: цвет границы поля - красный
@@ -201,13 +199,12 @@ public class RegistrationFormTests extends TestBase {
         $("#userNumber").setValue(USER_NUMBER);
 
         $("#dateOfBirthInput").click();
-        $(".react-datepicker__month-select").shouldBe(visible).selectOption(DATE_OF_BIRTH_MONTH);
-        $(".react-datepicker__year-select").shouldBe(visible).selectOptionByValue(DATE_OF_BIRTH_YEAR);
+        $(".react-datepicker__month-select").selectOption(DATE_OF_BIRTH_MONTH);
+        $(".react-datepicker__year-select").selectOptionByValue(DATE_OF_BIRTH_YEAR);
         $(".react-datepicker__day--0" + DATE_OF_BIRTH_DAY).click();
 
         // Оправка формы, проверка валидации
         $("#submit").scrollTo().click();
-        ;
         $("#userForm").shouldHave(Condition.cssClass(VALIDATION_CLASS));
 
         // Проверка выделения полей Name и Last Name. Ожидание: цвет границы поля - красный
