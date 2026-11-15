@@ -9,6 +9,7 @@ public class TestData {
     public static final String FIRST_NAME = "Julia";
     public static final String ONLY_WHITESPACE_FIRST_NAME = "    ";
     public static final String INVALID_FIRST_NAME = "-Ju1i@?!№**&";
+    public static final String USER_NAME = "Julia Fox";
 
     public static final String LAST_NAME = "Fox";
     public static final String ONLY_WHITESPACE_LAST_NAME = " ";
