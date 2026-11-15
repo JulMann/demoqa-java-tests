@@ -8,6 +8,7 @@ import static com.codeborne.selenide.Condition.cssValue;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
+import static java.lang.String.format;
 import static testData.TestData.*;
 
 public class RegistrationFormTests extends TestBase {
@@ -49,18 +50,17 @@ public class RegistrationFormTests extends TestBase {
         $("#example-modal-sizes-title-lg").shouldHave(text(MODAL_TITLE));
 
         // Проверки отображения отправленных данных в модальном окне
-        $(".table-responsive").$(byText("Student Name")).parent().shouldHave(text(FIRST_NAME + " " + LAST_NAME));
+        $(".table-responsive").$(byText("Student Name")).parent().shouldHave(text(format("%s %s", FIRST_NAME, LAST_NAME)));
         $(".table-responsive").$(byText("Student Email")).parent().shouldHave(text(USER_EMAIL));
         $(".table-responsive").$(byText("Gender")).parent().shouldHave(text(GENDER.get(1)));
         $(".table-responsive").$(byText("Mobile")).parent().shouldHave(text(USER_NUMBER));
-        $(".table-responsive").$(byText("Date of Birth")).parent().
-                shouldHave(text(DATE_OF_BIRTH_DAY + " " + DATE_OF_BIRTH_MONTH + "," + DATE_OF_BIRTH_YEAR));
+        $(".table-responsive").$(byText("Date of Birth")).parent().shouldHave(text(format("%s %s,%s", DATE_OF_BIRTH_DAY, DATE_OF_BIRTH_MONTH, DATE_OF_BIRTH_YEAR)));
         $(".table-responsive").$(byText("Subjects")).parent().shouldHave(text(String.join(", ", SUBJECT)));
         $(".table-responsive").$(byText("Hobbies")).parent().shouldHave(text(String.join(", ", HOBBIES)));
         $(".table-responsive").$(byText("Picture")).parent().shouldHave(text(PICTURE));
         $(".table-responsive").$(byText("Address")).parent().shouldHave(text(CURRENT_ADDRESS));
         $(".table-responsive").$(byText("State and City")).parent().
-                shouldHave(text(STATE_AND_CITIES.get(4).get(0) + " " + STATE_AND_CITIES.get(4).get(1)));
+                shouldHave(text(format("%s %s", STATE_AND_CITIES.get(4).get(0), STATE_AND_CITIES.get(4).get(1))));
 
     }
 
@@ -84,12 +84,11 @@ public class RegistrationFormTests extends TestBase {
         $("#example-modal-sizes-title-lg").shouldHave(text(MODAL_TITLE));
 
         // Проверки отображения отправленных данных в модальном окне
-        $(".table-responsive").$(byText("Student Name")).parent().shouldHave(text(FIRST_NAME + " " + LAST_NAME));
+        $(".table-responsive").$(byText("Student Name")).parent().shouldHave(text(format("%s %s", FIRST_NAME, LAST_NAME)));
         $(".table-responsive").$(byText("Student Email")).parent().$$("td").get(1).shouldHave(empty);
         $(".table-responsive").$(byText("Gender")).parent().shouldHave(text(GENDER.get(1)));
         $(".table-responsive").$(byText("Mobile")).parent().shouldHave(text(USER_NUMBER));
-        $(".table-responsive").$(byText("Date of Birth")).parent().
-                shouldHave(text(DATE_OF_BIRTH_DAY + " " + DATE_OF_BIRTH_MONTH + "," + DATE_OF_BIRTH_YEAR));
+        $(".table-responsive").$(byText("Date of Birth")).parent().shouldHave(text(format("%s %s,%s", DATE_OF_BIRTH_DAY, DATE_OF_BIRTH_MONTH, DATE_OF_BIRTH_YEAR)));
         $(".table-responsive").$(byText("Subjects")).parent().$$("td").get(1).shouldHave(empty);
         $(".table-responsive").$(byText("Hobbies")).parent().$$("td").get(1).shouldHave(empty);
         $(".table-responsive").$(byText("Picture")).parent().$$("td").get(1).shouldHave(empty);
