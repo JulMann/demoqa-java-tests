@@ -16,7 +16,7 @@ public class TextBoxTests extends TestBase {
         open("/text-box");
 
         // Заполнение всех полей формы
-        $("#userName").setValue(format("%s %s", FIRST_NAME, LAST_NAME));
+        $("#userName").setValue(USER_NAME);
         $("#userEmail").setValue(USER_EMAIL);
         $("#currentAddress").setValue(CURRENT_ADDRESS);
         $("#permanentAddress").setValue(PERMANENT_ADDRESS);
@@ -25,10 +25,10 @@ public class TextBoxTests extends TestBase {
 
         // Проверки отображения отправленных данных
         $("#name.mb-1").scrollTo();
-        $("#name.mb-1").shouldHave(text(format("Name: %s %s", FIRST_NAME, LAST_NAME)));
-        $("#email.mb-1").shouldHave(text(format("Email: %s", USER_EMAIL)));
-        $("#currentAddress.mb-1").shouldHave(text(format("Current Address: %s", CURRENT_ADDRESS)));
-        $("#permanentAddress.mb-1").shouldHave(text(format("Permananet Address: %s", PERMANENT_ADDRESS)));
+        $("#name.mb-1").shouldHave(text(USER_NAME));
+        $("#email.mb-1").shouldHave(text(USER_EMAIL));
+        $("#currentAddress.mb-1").shouldHave(text(CURRENT_ADDRESS));
+        $("#permanentAddress.mb-1").shouldHave(text(PERMANENT_ADDRESS));
 
     }
 
@@ -37,12 +37,12 @@ public class TextBoxTests extends TestBase {
         open("/text-box");
 
         // Заполнение поля Name с лишними пробелами
-        $("#userName").setValue(format("   %s %s   ", FIRST_NAME, LAST_NAME));
+        $("#userName").setValue(format("   %s   ", USER_NAME));
         $("#submit").click();
 
         // Проверка отправленного поля Name: Ожидание - лишние пробелы удалены
         $("#name.mb-1").scrollTo();
-        $("#name.mb-1").shouldHave(text(format("Name: %s %s", FIRST_NAME, LAST_NAME)));
+        $("#name.mb-1").shouldHave(text(USER_NAME));
 
     }
 }
